@@ -1,50 +1,197 @@
 <!doctype html>
-<html>
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>LM Fixation (4%FA in PBS, 20min)</title>
-	<style> html, body { height: 98%; width: 100%; margin: 2px; } </style>
-	<style type="text/css"> #viewer { width:95%; height:90%; margin:auto; border:1px; border-style:solid; border-color:#696969;} </style>
-  </head>
-  <body bgcolor=#000000>
-  	<div style="display: flex; justify-content: center; margin:auto; border-bottom:5px; border-style:solid; border-color:#000000">
-	<a href="https://www.mn.uio.no/ibv/english/research/about/infrastructure/facilities/life-science/imaging/em/index.html" target="_blank"><img src="Assets/Logo/logosmall.png" alt="logo" /></a></div>
-    <div id="viewer"></div>
-    <script src="openseadragon/openseadragon.js"></script>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+		}
+		.wrapper {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			height: 100%;
+			background-color: #000000;
+			width: 100%;
+		}
+		.logo {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			text-align: center;
+			flex-shrink: 0;
+		}
+		.viewers {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			height: calc(100% - 60px);
+			background-color: #000000;
+			box-sizing: border-box;
+			padding: 0;
+			gap: 0;
+		}
+		.viewer-container {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			height: 50%;
+			align-items: stretch;
+			padding: 0 40px;
+			box-sizing: border-box;
+			flex-shrink: 0;
+		}
+		/*left*/
+		.viewer-label {
+			width: 40px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #1a1a1a;
+			flex-shrink: 0;
+			border-right: 1px solid #D3D3D3;
+			position: relative;
+		}
+		/*format*/
+		.viewer-label h2 {
+			color: #D3D3D3;
+			font-family: Arial, sans-serif;
+			font-size: clamp(14px, 2.5vw, 24px); 
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			white-space: nowrap;
+			transform: rotate(-90deg); 
+			transform-origin: center;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.viewer {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			border: 1px solid #D3D3D3;
+			box-sizing: border-box;
+			border-left: none;
+			flex-grow: 1;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="logo">
+			<a href="https://www.mn.uio.no/ibv/english/research/about/infrastructure/facilities/life-science/imaging/em/index.html" target="_blank">
+				<img src="Assets/Logo/logosmall.png" alt="logo" style="max-height: 50px;" />
+			</a>
+		</div>
+		<div class="viewers">
+			<div class="viewer-container">
+				<div class="viewer-label">
+					<h2>Top</h2>
+				</div>
+				<div class="viewer" id="viewer1"></div>
+			</div>
+			<div class="viewer-container">
+				<div class="viewer-label">
+					<h2>Bottom</h2>
+				</div>
+				<div class="viewer" id="viewer2"></div>
+			</div>
+		</div>
+	</div>
+	<script src="openseadragon/openseadragon.js"></script>
 	<script src="openseadragon/openseadragon-scalebar.js"></script>
-    <script>
-		var viewer = OpenSeadragon({
-			id:            'viewer',
-			prefixUrl:     'openseadragon/images/',
-			tileSources: [{
-				type:       "zoomifytileservice",
-				width:      30000,
-				height:     14159,
-				tilesUrl:   "2025058_009_2025058A_A1_ser2/",
-				tileSize: 256,
-				fileFormat: 'jpg'	
-			}],
-			showNavigator: true,
-			wrapHorizontal: false,
-			wrapVertical: false,
-			zoomPerScroll: 1.2,
-			minZoomImageRatio: 0.5,
-			showNavigationControl: false
-		});
-		viewer.scalebar({
-			type: OpenSeadragon.ScalebarType.MICROSCOPY,
-			pixelsPerMeter: 1020260000,
-			minWidth: "200px",
-			location: OpenSeadragon.ScalebarLocation.BOTTOM_RIGHT,
-			xOffset: 20,
-			yOffset: 10,
-			stayInsideImage: true,
-			color: "rgb(0, 0, 0)",
-			fontColor: "rgb(0, 0, 0)",
-			backgroundColor: "rgba(200, 200, 200, 0.0)",
-			fontSize: "large",
-			barThickness: 4
-		});
-    </script>
-  </body>
+	<script>
+		function initViewers() {
+			var viewer1 = OpenSeadragon({
+				id:            'viewer1',
+				prefixUrl:     'openseadragon/images/',
+				tileSources: [{
+					type:       "zoomifytileservice",
+					width:      30000,
+					height:     14159,
+					tilesUrl:   "2025058_009_2025058A_A1_ser2/",
+					tileSize: 256,
+					fileFormat: 'jpg'	
+				}],
+				showNavigator: true,
+				wrapHorizontal: false,
+				wrapVertical: false,
+				zoomPerScroll: 1.2,
+				minZoomImageRatio: 0.5,
+				showNavigationControl: false,
+				immediateRender: true
+			});
+			
+			var viewer2 = OpenSeadragon({
+				id:            'viewer2',
+				prefixUrl:     'openseadragon/images/',
+				tileSources: [{
+					type:       "zoomifytileservice",
+					width:      32936,
+					height:     16669,
+					tilesUrl:   "2025058_008_2025058A_S1_ser1/",
+					tileSize: 256,
+					fileFormat: 'jpg'	
+				}],
+				showNavigator: true,
+				wrapHorizontal: false,
+				wrapVertical: false,
+				zoomPerScroll: 1.2,
+				minZoomImageRatio: 0.5,
+				showNavigationControl: false,
+				immediateRender: true
+			});
+			
+			viewer1.scalebar({
+				type: OpenSeadragon.ScalebarType.MICROSCOPY,
+				pixelsPerMeter: 1002560000,
+				minWidth: "200px",
+				location: OpenSeadragon.ScalebarLocation.BOTTOM_RIGHT,
+				xOffset: 20,
+				yOffset: 10,
+				stayInsideImage: true,
+				color: "rgb(0, 0, 0)",
+				fontColor: "rgb(0, 0, 0)",
+				backgroundColor: "rgba(200, 200, 200, 0.0)",
+				fontSize: "large",
+				barThickness: 4
+			});
+			
+			viewer2.scalebar({
+				type: OpenSeadragon.ScalebarType.MICROSCOPY,
+				pixelsPerMeter: 1202560000,
+				minWidth: "200px",
+				location: OpenSeadragon.ScalebarLocation.BOTTOM_RIGHT,
+				xOffset: 20,
+				yOffset: 10,
+				stayInsideImage: true,
+				color: "rgb(0, 0, 0)",
+				fontColor: "rgb(0, 0, 0)",
+				backgroundColor: "rgba(200, 200, 200, 0.0)",
+				fontSize: "large",
+				barThickness: 4
+			});
+			
+			window.addEventListener('resize', function() {
+				viewer1.viewport.resize();
+				viewer1.update();
+				viewer2.viewport.resize();
+				viewer2.update();
+			});
+			
+			return { v1: viewer1, v2: viewer2 };
+		}
+		
+		initViewers();
+	</script>
+	</body>
 </html>
